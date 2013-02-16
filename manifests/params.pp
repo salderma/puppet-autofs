@@ -29,7 +29,7 @@ class autofs::params {
   }
 
   $process = $::operatingsystem ? {
-    default => 'autofs',
+    default => 'automount',
   }
 
   $process_args = $::operatingsystem ? {
@@ -37,15 +37,15 @@ class autofs::params {
   }
 
   $process_user = $::operatingsystem ? {
-    default => 'autofs',
+    default => 'root',
   }
 
   $config_dir = $::operatingsystem ? {
-    default => '/etc/autofs',
+    default => '',
   }
 
   $config_file = $::operatingsystem ? {
-    default => '/etc/autofs/autofs.conf',
+    default => '/etc/auto.master',
   }
 
   $config_file_mode = $::operatingsystem ? {
@@ -70,18 +70,18 @@ class autofs::params {
   }
 
   $data_dir = $::operatingsystem ? {
-    default => '/etc/autofs',
+    default => '',
   }
 
   $log_dir = $::operatingsystem ? {
-    default => '/var/log/autofs',
+    default => '',
   }
 
   $log_file = $::operatingsystem ? {
-    default => '/var/log/autofs/autofs.log',
+    default => '',
   }
 
-  $port = '42'
+  $port = ''
   $protocol = 'tcp'
 
   # General Settings
