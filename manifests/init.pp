@@ -128,7 +128,7 @@
 # [*noops*]
 #   Set noop metaparameter to true for all the resources managed by the module.
 #   Basically you can run a dryrun for this specific module if you set
-#   this to true. Default: false
+#   this to true. Default: undef
 #
 # Default class params - As defined in autofs::params.
 # Note that these variables are mostly defined and used in the module itself,
@@ -263,7 +263,6 @@ class autofs (
   $bool_firewall=any2bool($firewall)
   $bool_debug=any2bool($debug)
   $bool_audit_only=any2bool($audit_only)
-  $bool_noops=any2bool($noops)
 
   ### Definition of some variables used in the module
   $manage_package = $autofs::bool_absent ? {
@@ -338,7 +337,7 @@ class autofs (
   ### Managed resources
   package { $autofs::package:
     ensure  => $autofs::manage_package,
-    noop    => $autofs::bool_noops,
+    noop    => $autofs::noops,
   }
 
   service { 'autofs':
@@ -348,7 +347,7 @@ class autofs (
     hasstatus  => $autofs::service_status,
     pattern    => $autofs::process,
     require    => Package[$autofs::package],
-    noop       => $autofs::bool_noops,
+    noop       => $autofs::noops,
   }
 
   file { 'autofs.conf':
@@ -363,7 +362,7 @@ class autofs (
     content => $autofs::manage_file_content,
     replace => $autofs::manage_file_replace,
     audit   => $autofs::manage_audit,
-    noop    => $autofs::bool_noops,
+    noop    => $autofs::noops,
   }
 
   # The whole autofs configuration directory can be recursively overriden
@@ -379,7 +378,7 @@ class autofs (
       force   => $autofs::bool_source_dir_purge,
       replace => $autofs::manage_file_replace,
       audit   => $autofs::manage_audit,
-      noop    => $autofs::bool_noops,
+      noop    => $autofs::noops,
     }
   }
 
@@ -397,7 +396,7 @@ class autofs (
       ensure    => $autofs::manage_file,
       variables => $classvars,
       helper    => $autofs::puppi_helper,
-      noop      => $autofs::bool_noops,
+      noop      => $autofs::noops,
     }
   }
 
@@ -411,7 +410,7 @@ class autofs (
         target   => $autofs::monitor_target,
         tool     => $autofs::monitor_tool,
         enable   => $autofs::manage_monitor,
-        noop     => $autofs::bool_noops,
+        noop     => $autofs::noops,
       }
     }
     if $autofs::service != '' {
@@ -423,7 +422,7 @@ class autofs (
         argument => $autofs::process_args,
         tool     => $autofs::monitor_tool,
         enable   => $autofs::manage_monitor,
-        noop     => $autofs::bool_noops,
+        noop     => $autofs::noops,
       }
     }
   }
@@ -440,7 +439,7 @@ class autofs (
       direction   => 'input',
       tool        => $autofs::firewall_tool,
       enable      => $autofs::manage_firewall,
-      noop        => $autofs::bool_noops,
+      noop        => $autofs::noops,
     }
   }
 
@@ -454,7 +453,7 @@ class autofs (
       owner   => 'root',
       group   => 'root',
       content => inline_template('<%= scope.to_hash.reject { |k,v| k.to_s =~ /(uptime.*|path|timestamp|free|.*password.*|.*psk.*|.*key)/ }.to_yaml %>'),
-      noop    => $autofs::bool_noops,
+      noop    => $autofs::noops,
     }
   }
 
