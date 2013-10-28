@@ -17,7 +17,8 @@ class autofs::params {
   ### Application related parameters
 
   $package = $::operatingsystem ? {
-    default => 'autofs',
+    /(?i:Solaris)/ => '',
+    default        => 'autofs',
   }
 
   $service = $::operatingsystem ? {
@@ -29,7 +30,8 @@ class autofs::params {
   }
 
   $process = $::operatingsystem ? {
-    default => 'automount',
+    /(?i:Solaris) => 'automountd',
+    default       => 'automount',
   }
 
   $process_args = $::operatingsystem ? {
@@ -45,7 +47,8 @@ class autofs::params {
   }
 
   $config_file = $::operatingsystem ? {
-    default => '/etc/auto.master',
+    /(?i:Solaris)/ => '/etc/auto_master',
+    default        => '/etc/auto.master',
   }
 
   $config_file_mode = $::operatingsystem ? {
@@ -62,6 +65,7 @@ class autofs::params {
 
   $config_file_init = $::operatingsystem ? {
     /(?i:Debian|Ubuntu|Mint)/ => '/etc/default/autofs',
+    /(?i:Solaris)             => '',
     default                   => '/etc/sysconfig/autofs',
   }
 
