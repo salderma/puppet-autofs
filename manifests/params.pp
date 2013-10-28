@@ -30,8 +30,8 @@ class autofs::params {
   }
 
   $process = $::operatingsystem ? {
-    /(?i:Solaris) => 'automountd',
-    default       => 'automount',
+    /(?i:Solaris)/ => 'automountd',
+    default        => 'automount',
   }
 
   $process_args = $::operatingsystem ? {
@@ -65,7 +65,7 @@ class autofs::params {
 
   $config_file_init = $::operatingsystem ? {
     /(?i:Debian|Ubuntu|Mint)/ => '/etc/default/autofs',
-    /(?i:Solaris)             => '',
+    /(?i:Solaris)/            => '',
     default                   => '/etc/sysconfig/autofs',
   }
 
