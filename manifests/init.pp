@@ -335,9 +335,11 @@ class autofs (
   }
 
   ### Managed resources
-  package { $autofs::package:
-    ensure  => $autofs::manage_package,
-    noop    => $autofs::noops,
+  if autofs::package {
+    package { $autofs::package:
+      ensure  => $autofs::manage_package,
+      noop    => $autofs::noops,
+    }
   }
 
   service { 'autofs':
