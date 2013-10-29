@@ -269,6 +269,9 @@ class autofs (
     true  => 'absent',
     false => $autofs::version,
   }
+  $require_package = $autofs::package ? {
+    ''      => undef,
+    default => Package['autofs'],
 
   $manage_service_enable = $autofs::bool_disableboot ? {
     true    => false,
@@ -348,7 +351,7 @@ class autofs (
     enable     => $autofs::manage_service_enable,
     hasstatus  => $autofs::service_status,
     pattern    => $autofs::process,
-    require    => Package[$autofs::package],
+    require    => $autofs::require_package,
     noop       => $autofs::noops,
   }
 
@@ -358,7 +361,7 @@ class autofs (
     mode    => $autofs::config_file_mode,
     owner   => $autofs::config_file_owner,
     group   => $autofs::config_file_group,
-    require => Package[$autofs::package],
+    require => autofs::require_package,
     notify  => $autofs::manage_service_autorestart,
     source  => $autofs::manage_file_source,
     content => $autofs::manage_file_content,
@@ -372,7 +375,7 @@ class autofs (
     file { 'autofs.dir':
       ensure  => directory,
       path    => $autofs::config_dir,
-      require => Package[$autofs::package],
+      require => $autofs::require_package,
       notify  => $autofs::manage_service_autorestart,
       source  => $autofs::source_dir,
       recurse => true,
