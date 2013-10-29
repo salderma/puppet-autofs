@@ -272,6 +272,7 @@ class autofs (
   $require_package = $autofs::package ? {
     ''      => undef,
     default => Package['autofs'],
+  }
 
   $manage_service_enable = $autofs::bool_disableboot ? {
     true    => false,
